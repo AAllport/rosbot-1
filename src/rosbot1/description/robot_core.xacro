@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="robot_core">
+
+    <!-- Define the mecanum wheel -->
+    <xacro:macro name="mecanum_wheel" params="prefix">
+        <joint name="${prefix}_joint" type="continuous">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <parent link="${prefix}_base_link"/>
+            <child link="${prefix}_wheel_link"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+        <link name="${prefix}_wheel_link">
+            <visual>
+                <!-- Add visual properties for the wheel -->
+            </visual>
+            <collision>
+                <!-- Add collision properties for the wheel -->
+            </collision>
+            <inertial>
+                <!-- Add inertial properties for the wheel -->
+            </inertial>
+        </link>
+    </xacro:macro>
+
+    <!-- Define the robot base -->
+    <link name="base_link">
+        <visual>
+            <!-- Add visual properties for the base -->
+        </visual>
+        <collision>
+            <!-- Add collision properties for the base -->
+        </collision>
+        <inertial>
+            <!-- Add inertial properties for the base -->
+        </inertial>
+    </link>
+
+    <!-- Add mecanum wheels -->
+    <xacro:mecanum_wheel prefix="front_left"/>
+    <xacro:mecanum_wheel prefix="front_right"/>
+    <xacro:mecanum_wheel prefix="rear_left"/>
+    <xacro:mecanum_wheel prefix="rear_right"/>
+
+    <!-- Define the robot -->
+    <link name="robot_link">
+        <visual>
+            <!-- Add visual properties for the robot -->
+        </visual>
+        <collision>
+            <!-- Add collision properties for the robot -->
+        </collision>
+        <inertial>
+            <!-- Add inertial properties for the robot -->
+        </inertial>
+    </link>
+
+    <!-- Connect the wheels to the base -->
+    <joint name="front_left_joint" type="fixed">
+        <origin xyz="0.25 0.25 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="front_left_base_link"/>
+    </joint>
+    <joint name="front_right_joint" type="fixed">
+        <origin xyz="0.25 -0.25 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="front_right_base_link"/>
+    </joint>
+    <joint name="rear_left_joint" type="fixed">
+        <origin xyz="-0.25 0.25 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="rear_left_base_link"/>
+    </joint>
+    <joint name="rear_right_joint" type="fixed">
+        <origin xyz="-0.25 -0.25 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="rear_right_base_link"/>
+    </joint>
+
+    <!-- Connect the robot to the base -->
+    <joint name="robot_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="robot_link"/>
+    </joint>
+
+</robot>
