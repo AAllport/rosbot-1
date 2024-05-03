@@ -1,0 +1,4 @@
+[submodule "src/ldlidar"]
+	path = src/ldlidar
+	url = git@github.com:linorobot/ldlidar.git
+	branch = ros2
