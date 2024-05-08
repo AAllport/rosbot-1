@@ -3,7 +3,7 @@
 
     <joint name="lidar_joint" type="fixed">
         <origin xyz="0 0 0.1" rpy="0 0 0" />
-        <parent link="robot_joint" />
+        <parent link="robot_link" />
         <child link="lidar_frame" />
     </joint>
 
