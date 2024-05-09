@@ -1,41 +1,23 @@
 <?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:property name="chassis_length" value="0.15"/>
+    <xacro:property name="chassis_width" value="0.10"/>
+    <xacro:property name="chassis_height" value="0.04"/>
 
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="robot_core">
-
-    <!-- Define the mecanum wheel -->
-    <xacro:macro name="mecanum_wheel" params="prefix origin">
-        <link name="${prefix}_wheel_link">
-            <visual>
-                <geometry>
-                    <cylinder radius="0.1" length="0.05" />
-                    <material name="white">
-                        <color rgba="1 1 1 1" />
-                    </material>
-                </geometry>
-            </visual>
-            <collision>
-                <geometry>
-                    <cylinder radius="0.1" length="0.05" />
-                </geometry>
-            </collision>
-            <inertial>
-                <mass value="0.1" />
-                <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
-            </inertial>
-        </link>
-        <joint name="${prefix}_joint" type="continuous">
-            <origin xyz="${origin}" rpy="0 0 0" />
-            <parent link="robot_link" />
-            <child link="${prefix}_wheel_link" />
-            <axis xyz="0 0 1" />
-        </joint>
-    </xacro:macro>
 
     <!-- Define the robot base -->
     <link name="base_link"></link>
 
     <!-- Define the robot -->
-    <link name="robot_link"></link>
+    <link name="robot_link">
+        <visual>
+            <origin xyz="0 0 0"/>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+            <material name="orange"/>
+        </visual>
+    </link>
 
     <!-- Connect the robot to the base -->
     <joint name="robot_joint" type="fixed">
@@ -43,11 +25,4 @@
         <parent link="base_link" />
         <child link="robot_link" />
     </joint>
-
-    <!-- Add mecanum wheels -->
-    <xacro:mecanum_wheel prefix="front_left" origin="0.25 0.25 0" />
-    <xacro:mecanum_wheel prefix="front_right" origin="0.25 -0.25 0" />
-    <xacro:mecanum_wheel prefix="rear_left" origin="-0.25 0.25 0" />
-    <xacro:mecanum_wheel prefix="rear_right" origin="-0.25 -0.25 0" />
-
 </robot>
