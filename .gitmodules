@@ -1,7 +1,8 @@
-[submodule "src/ldlidar"]
-	path = src/ldlidar
-	url = git@github.com:linorobot/ldlidar.git
-	branch = ros2
 [submodule "src/ldrobot-lidar-ros2"]
 	path = src/ldrobot-lidar-ros2
 	url = https://github.com/Myzhar/ldrobot-lidar-ros2.git
+
+[submodule "src/micro_ros_setup"]
+	path = src/micro_ros_setup
+	url = https://github.com/micro-ROS/micro_ros_setup.git
+	branch = "iron"
