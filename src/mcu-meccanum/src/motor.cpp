@@ -1,6 +1,7 @@
-#include <stdio.h>
-#include <Arduino.h>
 #include "motor.h"
+#include "maths.h"
+
+// #include <tf2/LinearMath/Quaternion.h>
 
 static const uint8_t D0 = 26;
 static const uint8_t D1 = 22;
@@ -66,16 +67,26 @@ void handleMovement(float x, float y, float rz)
   }
 }
 
-int32_t *handleIntergration()
-{
-  static int32_t positions[4];
-  for (int i = 0; i < 4; i++)
-  {
-    motorPins[i].position += motorPins[i].currentSpeed;
-    positions[i] = motorPins[i].position;
-  }
+auto laterial_speed_per_second = 0.5;
+auto angular_speed_per_second = 0.5;
 
-  return positions;
+void handleIntergration(nav_msgs__msg__Odometry *odom, geometry_msgs__msg__Twist *twist)
+{
+  // Get the current orientation of the robot
+  // double yaw = tf2::getYaw(odom->pose.pose.orientation);
+  double yaw = maths::quat_to_yaw(odom->pose.pose.orientation);
+
+  // Calculate the change in position
+  double dx = twist->linear.x * cos(yaw) - twist->linear.y * sin(yaw);
+  double dy = twist->linear.x * sin(yaw) + twist->linear.y * cos(yaw);
+
+  // Update the position in the odom message
+  odom->pose.pose.position.x += dx * (laterial_speed_per_second * 0.2);
+  odom->pose.pose.position.y += dy * (laterial_speed_per_second * 0.2);
+
+  odom->pose.pose.orientation = maths::pack_quat(maths::multiply_quat(
+      maths::unpack_quat(odom->pose.pose.orientation),
+      maths::euler_to_quat(0, 0, twist->angular.z)));
 }
 
 float *getSpeeds()

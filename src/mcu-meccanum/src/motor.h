@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include <Arduino.h>
-#include <geometry_msgs/msg/twist.h>
+
+#include <nav_msgs/msg/odometry.h>
 
 enum MotorSelection
 {
@@ -20,6 +22,8 @@ struct MotorPin
 extern MotorPin motorPins[4];
 
 void setupMotors();
+
 void handleMovement(float x, float y, float rz);
-int32_t *handleIntergration();
+void handleIntergration(nav_msgs__msg__Odometry *odom, geometry_msgs__msg__Twist *twist);
+
 float* getSpeeds();
